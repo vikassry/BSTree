@@ -37,3 +37,25 @@ Node *searchElement(Node *node, int item){
 Node *find(BSTree t, int item){
 	return (!t.root) ? NULL : searchElement(t.root, item);
 }
+
+Node *del(nodePtr *node, int item){
+	nodePtr result;
+	if(!*node) return NULL;
+	if(item < (*node)->data)
+		(*node)->left = del(&(*node)->left, item);
+	else if(item > (*node)->data)
+		(*node)->right = del(&(*node)->right, item);
+	else{
+		if((*node)->left == NULL && (*node)->right == NULL){
+			result = *node;
+			free(*node);
+			*node = NULL;
+		}	
+	}
+	return result;
+}
+
+Node* Delete(BSTree *t, int item){
+	t->count -= 1;
+	return del(&t->root,item);
+}

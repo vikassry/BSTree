@@ -68,13 +68,13 @@ void test_find_returns_null_when_element_is_not_found(){
 	free(t.root);
 }
 
-void test_find_returns_node_with_data_3_when_3_is_passed_to_find(){
+void test_find_returns_root_when_root_data_6_is_passed_to_find(){
 	BSTree t = createBSTree(); Node *result;
-	insert(&t, 6); insert(&t, 7); insert(&t, 3);
-	assert(t.count==3);
-	result = find(t, 3);
-	assertEqual(result->data ,3);
-	assert(t.root->left == result);
+	insert(&t, 6); insert(&t, 7);
+	result = find(t, 6);
+	assertEqual(result->data ,6);
+	assert(t.root == result);
+	assert(t.count==2);
 	free(t.root);
 }
 
@@ -87,4 +87,21 @@ void test_find_returns_node_with_data_5_when_5_is_passed_to_find(){
 	assertEqual(result->data ,5);
 	assert(t.root->left->right->left == result);
 	free(t.root);
+}
+
+void test_Delete_returns_NULL_when_tree_is_empty(){
+	BSTree t = createBSTree();
+	assert(Delete(&t, 2) == NULL);
+}
+
+void test_Deletes_the_leaf_node_and_returns_reference_of_the_deleted_element(){
+	BSTree t = createBSTree(); Node *result;
+	insert(&t, 7); insert(&t, 8); insert(&t, 3); insert(&t, 4);
+	assert(t.count==4);
+	assert(t.root->left->right->data == 4);
+	result = Delete(&t, 4);
+
+	assert(t.root->left->right == NULL);
+	assertEqual(result->data, 4);
+	assertEqual(t.count,3);
 }

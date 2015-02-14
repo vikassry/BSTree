@@ -1,5 +1,6 @@
 typedef struct node Node;
 typedef Node* nodePtr;
+
 struct node{
 	int data;
 	Node *left;
@@ -14,3 +15,4 @@ typedef struct tree{
 BSTree createBSTree(void);
 int insert(BSTree *, int);
 Node * find(BSTree, int);
+Node* Delete(BSTree *, int);
