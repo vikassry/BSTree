@@ -13,22 +13,27 @@ Node *createNode(int data){
 	return node;	
 }
 
-void findPlaceAndInsert(nodePtr *node, nodePtr item){
+void lookPlaceAndInsert(nodePtr *node, nodePtr item){
 	if(*node==NULL){
 		*node = item; return; 
 	}
-	if(item->data < (*node)->data)
-		findPlaceAndInsert(&(*node)->left, item);
-	else
-		findPlaceAndInsert(&(*node)->right, item);
+	(item->data < (*node)->data) ? lookPlaceAndInsert(&(*node)->left, item)
+	: lookPlaceAndInsert(&(*node)->right, item);
 }
 
 int insert(BSTree *t, int data){
 	Node *item = createNode(data);
-	findPlaceAndInsert(&t->root, item);
+	lookPlaceAndInsert(&t->root, item);
 	return ++t->count;
 }
 
+
+Node *searchElement(Node *node, int item){
+	return (node->data == item) ? node : (node->left && item < node->data) ? 
+	searchElement(node->left, item) : (node->right && item > node->data) ? 
+	searchElement(node->right, item) : NULL;
+}
+
 Node *find(BSTree t, int item){
-	return NULL;
+	return (!t.root) ? NULL : searchElement(t.root, item);
 }

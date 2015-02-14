@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "BSTree.h"
 #include "expr_assert.h"
 
@@ -14,6 +15,7 @@ void test_insert_inserts_5_as_root_of_the_tree_when_root_is_NULL_and_returns_1()
 	insert(&t, 4);
 	assert(t.root->data == 4);
 	assert(t.count == 1);
+	free(t.root);
 }
 
 void test_insert_inserts_at_left_when_root_5_and_2_sent_to_insert_and_returns_2_as_number_of_nodes_in_the_tree(){
@@ -23,6 +25,7 @@ void test_insert_inserts_at_left_when_root_5_and_2_sent_to_insert_and_returns_2_
 	insert(&t, 4);
 	assertEqual(t.root->left->data, 4);
 	assertEqual(t.count, 2);
+	free(t.root);
 }
 
 void test_insert_inserts_at_right_when_root_5_and_6_sent_to_insert_and_returns_number_of_nodes_in_the_tree(){
@@ -32,6 +35,7 @@ void test_insert_inserts_at_right_when_root_5_and_6_sent_to_insert_and_returns_n
 	assert(insert(&t, 6) == 2);	
 	assertEqual(t.root->right->data, 6);
 	assertEqual(t.count, 2);
+	free(t.root);
 }
 
 void test_insert_inserts_at_right_when_root_5_and_8_is_sent_as_other_bigger_element_to_insert(){
@@ -40,14 +44,47 @@ void test_insert_inserts_at_right_when_root_5_and_8_is_sent_as_other_bigger_elem
 	assert(t.root->data == 6);
 	assert(insert(&t, 7) == 2);	
 	insert(&t, 4); insert(&t, 8); 
-	insert(&t, 1); insert(&t, 3);
+	insert(&t, 1); insert(&t, 3);insert(&t, 5);
+	
 	assertEqual(t.root->left->data, 4);
 	assertEqual(t.root->right->data, 7);
 	assertEqual(t.root->right->right->data, 8);
-	assert(t.root->left->left->data == 1);
+	assertEqual(t.root->left->left->data, 1);
+	assertEqual(t.root->left->right->data, 5);
 	assertEqual(t.root->left->left->right->data, 3);
+	assert(t.count == 7);
+	free(t.root);
 }
 
-	// void test_find_returns_null_when_element_is_not_found(){
-		
-	// }
+void test_find_returns_NULL_when_tree_is_empty(){
+	BSTree t = createBSTree();
+	assert(find(t, 1)==NULL);	
+}
+
+void test_find_returns_null_when_element_is_not_found(){
+	BSTree t = createBSTree();
+	insert(&t, 2);
+	assert(find(t, 1)==NULL);
+	free(t.root);
+}
+
+void test_find_returns_node_with_data_3_when_3_is_passed_to_find(){
+	BSTree t = createBSTree(); Node *result;
+	insert(&t, 6); insert(&t, 7); insert(&t, 3);
+	assert(t.count==3);
+	result = find(t, 3);
+	assertEqual(result->data ,3);
+	assert(t.root->left == result);
+	free(t.root);
+}
+
+void test_find_returns_node_with_data_5_when_5_is_passed_to_find(){
+	BSTree t = createBSTree(); Node *result;
+	insert(&t, 7); insert(&t, 8); insert(&t, 3);
+	insert(&t, 6); insert(&t, 9); insert(&t, 5); insert(&t, 4);
+	assert(t.count==7);
+	result = find(t, 5);
+	assertEqual(result->data ,5);
+	assert(t.root->left->right->left == result);
+	free(t.root);
+}
