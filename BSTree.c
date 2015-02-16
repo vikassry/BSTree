@@ -49,28 +49,40 @@ Node *findParent(BSTree t, int item){
 	return (!t.root) ? NULL : searchparent(t.root, item);
 }
 
+Node *findMax(Node *node){
+	return (!node) ? NULL : (!node->right) ? node : findMax(node->right);
+}
 
 Node *del(BSTree *t, int item){
-	nodePtr result;
+	nodePtr result; int max;
 	Node *node = find(*t, item);
 	Node *parent = findParent(*t, item);
 	if(parent==NULL && t->root == node){
 		free(t->root); t->root = NULL; 
 	}
 	if(node->left == NULL && node->right == NULL){
-		(parent->left==node) ? (parent->left=NULL) : (parent->right=NULL);
+		(parent->left == node) ? (parent->left = NULL) : (parent->right = NULL);
 		result = node; free(node);
 		node = NULL;
 	}
 	else if(node->left == NULL && node->right){
-		(parent->left==node) ? (parent->left=node->right) : (parent->right=node->right);
+		(parent->left == node) ? (parent->left = node->right) : (parent->right = node->right);
 		result = node; free(node);
 		node = NULL;
 	}
 	else if(node->right == NULL && node->left){
-		(parent->left==node) ? (parent->left=node->left) : (parent->right=node->left);
+		(parent->left == node) ? (parent->left = node->left) : (parent->right = node->left);
 		result = node; free(node);
 		node = NULL;
+	}
+	else if(node->right && node->left && parent){
+		max = findMax(node->left)->data;
+		del(t, max);
+		if(parent->right == node)
+			parent->right->data = max;
+		else if(parent->left == node)
+			parent->left->data = max;
+		result = node; node = NULL; 
 	}
 	return result;
 }
@@ -81,4 +93,3 @@ Node* Delete(BSTree *t, int item){
 	t->count -= 1;
 	return del(t, item);
 }
-

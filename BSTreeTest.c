@@ -126,18 +126,20 @@ void test_Delete_returns_NULL_when_tree_is_empty(){
 
 void test_deletes_the_root(){
 	BSTree t = createBSTree(); 
-	Node *result; insert(&t, 7);
+	insert(&t, 7);
 	assert(Delete(&t, 7)->data == 7);
 	assert(t.root == NULL);
 }
 
 void test_Deletes_the_leaf_node_and_returns_reference_of_the_leaf_node(){
-	BSTree t = createBSTree(); Node *result;
+	BSTree t = createBSTree(); Node *result, *r;
 	insert(&t, 7); insert(&t, 8); insert(&t, 3);
 	assert(t.count==3);
+	r = t.root->left;
 	assert(t.root->left->data == 3);
 	result = Delete(&t, 3);
 
+	assert(r == result);
 	assert(t.root->left == NULL);
 	assertEqual(result->data, 3);
 	assertEqual(t.count,2);
@@ -167,4 +169,33 @@ void test_Deletes_the_node_with_only_left_child_returns_reference_of_the_deleted
 	assertEqual(result->data,1);
 	assertEqual(t.count,3);
 	free(t.root);
+}
+
+void test_findMax_returns_NULL_when_node_is_NULL(){
+	assert(findMax(NULL) == NULL);
+}
+
+void test_findMax_returns_the_node_itself_when_only_one_node_is_present_in_tree(){
+	BSTree t = createBSTree();
+	insert(&t, 15);
+	assert(findMax(t.root)->data == 15);
+}
+
+void test_findMax_return_maximum_value_element_from_a_tree_or_subtree(){
+	BSTree t = createBSTree(); Node *result;
+	int i, numbers[] = {8,4,12,5,10,9,11,7,2,13,14};
+	for(i=0; i<11; i++)
+		insert(&t, numbers[i]);
+	assertEqual(findMax(t.root)->data, 14);
+	assertEqual(findMax(t.root->right->left)->data, 11);
+}
+
+void test_Delete_deletes_node_having_two_node_connects_the_lowest_element_in_its_right_subtree_to_its_parent(){
+	BSTree t = createBSTree(); Node *result;
+	int i, numbers[] = {8,4,12,5,11,9,1,7,2,15};
+	for(i=0; i<10; i++)
+		insert(&t, numbers[i]);
+	result = Delete(&t, 12);
+	assertEqual(t.root->right->data, 11);
+	
 }

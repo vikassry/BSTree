@@ -16,5 +16,6 @@ BSTree createBSTree(void);
 int insert(BSTree *, int);
 Node * find(BSTree, int);
 Node *findParent(BSTree, int);
+Node * findMax(Node*);
 Node* Delete(BSTree *, int);
 void traverse(BSTree, void (*)(int));
