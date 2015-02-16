@@ -54,17 +54,24 @@ Node *del(BSTree *t, int item){
 	nodePtr result;
 	Node *node = find(*t, item);
 	Node *parent = findParent(*t, item);
+	if(parent==NULL && t->root == node){
+		free(t->root); t->root = NULL; 
+	}
 	if(node->left == NULL && node->right == NULL){
 		(parent->left==node) ? (parent->left=NULL) : (parent->right=NULL);
 		result = node; free(node);
 		node = NULL;
 	}
-	// 	else if((*node)->left == NULL && (*node)->right){
-	// 		result = *node;
-	// 		free(*node);
-	// 		*node = (*node)->right;
-	// 	}
-	// }
+	else if(node->left == NULL && node->right){
+		(parent->left==node) ? (parent->left=node->right) : (parent->right=node->right);
+		result = node; free(node);
+		node = NULL;
+	}
+	else if(node->right == NULL && node->left){
+		(parent->left==node) ? (parent->left=node->left) : (parent->right=node->left);
+		result = node; free(node);
+		node = NULL;
+	}
 	return result;
 }
 

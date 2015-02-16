@@ -89,11 +89,6 @@ void test_find_returns_node_with_data_5_when_5_is_passed_to_find(){
 	free(t.root);
 }
 
-void test_Delete_returns_NULL_when_tree_is_empty(){
-	BSTree t = createBSTree();
-	assert(Delete(&t, 2) == NULL);
-}
-
 void test_find_Parent_returns_NULL_when_tree_is_empty(){
 	BSTree t = createBSTree();
 	assert(findParent(t, 6) == NULL);
@@ -124,26 +119,52 @@ void test_find_Parent_returns_node_when_it_is_asked_to_find_roots_parent(){
 	free(t.root);
 }
 
+void test_Delete_returns_NULL_when_tree_is_empty(){
+	BSTree t = createBSTree();
+	assert(Delete(&t, 2) == NULL);
+}
 
-void test_Deletes_the_leaf_node_and_returns_reference_of_the_deleted_element(){
+void test_deletes_the_root(){
+	BSTree t = createBSTree(); 
+	Node *result; insert(&t, 7);
+	assert(Delete(&t, 7)->data == 7);
+	assert(t.root == NULL);
+}
+
+void test_Deletes_the_leaf_node_and_returns_reference_of_the_leaf_node(){
+	BSTree t = createBSTree(); Node *result;
+	insert(&t, 7); insert(&t, 8); insert(&t, 3);
+	assert(t.count==3);
+	assert(t.root->left->data == 3);
+	result = Delete(&t, 3);
+
+	assert(t.root->left == NULL);
+	assertEqual(result->data, 3);
+	assertEqual(t.count,2);
+	free(t.root);
+}
+
+void test_Deletes_the_node_with_only_right_child_returns_reference_of_the_deleted_element(){
 	BSTree t = createBSTree(); Node *result;
 	insert(&t, 7); insert(&t, 8); insert(&t, 3); insert(&t, 4);
 	assert(t.count==4);
 	assert(t.root->left->right->data == 4);
 	result = Delete(&t, 4);
+	
 	assert(t.root->left->right == NULL);
 	assertEqual(result->data, 4);
 	assertEqual(t.count,3);
+	free(t.root);
 }
 
-void test_Deletes_the_node_with_having_one_child_and_returns_reference_of_the_deleted_element(){
+void test_Deletes_the_node_with_only_left_child_returns_reference_of_the_deleted_element(){
 	BSTree t = createBSTree(); Node *result;
-	insert(&t, 7); insert(&t, 8); insert(&t, 3); insert(&t, 4);
-	assert(t.count==4);
-	assert(t.root->left->data == 3);
-	result = Delete(&t, 3);
-
-	assertEqual(t.root->left->data, 3);
-	assertEqual(result->data, 4);
+	insert(&t, 7); insert(&t, 8); insert(&t, 3); insert(&t, 1);
+	assert(t.root->left->left->data == 1);
+	result = Delete(&t, 1);
+	
+	assert(t.root->left->left == NULL);
+	assertEqual(result->data,1);
 	assertEqual(t.count,3);
+	free(t.root);
 }
