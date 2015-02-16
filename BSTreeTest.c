@@ -125,26 +125,25 @@ void test_find_Parent_returns_node_when_it_is_asked_to_find_roots_parent(){
 }
 
 
-// void test_Deletes_the_leaf_node_and_returns_reference_of_the_deleted_element(){
-// 	BSTree t = createBSTree(); Node *result;
-// 	insert(&t, 7); insert(&t, 8); insert(&t, 3); insert(&t, 4);
-// 	assert(t.count==4);
-// 	assert(t.root->left->right->data == 4);
-// 	result = Delete(&t, 4);
+void test_Deletes_the_leaf_node_and_returns_reference_of_the_deleted_element(){
+	BSTree t = createBSTree(); Node *result;
+	insert(&t, 7); insert(&t, 8); insert(&t, 3); insert(&t, 4);
+	assert(t.count==4);
+	assert(t.root->left->right->data == 4);
+	result = Delete(&t, 4);
+	assert(t.root->left->right == NULL);
+	assertEqual(result->data, 4);
+	assertEqual(t.count,3);
+}
 
-// 	assert(t.root->left->right == NULL);
-// 	assertEqual(result->data, 4);
-// 	assertEqual(t.count,3);
-// }
+void test_Deletes_the_node_with_having_one_child_and_returns_reference_of_the_deleted_element(){
+	BSTree t = createBSTree(); Node *result;
+	insert(&t, 7); insert(&t, 8); insert(&t, 3); insert(&t, 4);
+	assert(t.count==4);
+	assert(t.root->left->data == 3);
+	result = Delete(&t, 3);
 
-// void test_Deletes_the_node_with_having_one_child_and_returns_reference_of_the_deleted_element(){
-// 	BSTree t = createBSTree(); Node *result;
-// 	insert(&t, 7); insert(&t, 8); insert(&t, 3); insert(&t, 4);
-// 	assert(t.count==4);
-// 	assert(t.root->left->data == 3);
-// 	result = Delete(&t, 3);
-
-// 	assertEqual(t.root->left->data, 3);
-// 	assertEqual(result->data, 4);
-// 	assertEqual(t.count,3);
-// }
+	assertEqual(t.root->left->data, 3);
+	assertEqual(result->data, 4);
+	assertEqual(t.count,3);
+}

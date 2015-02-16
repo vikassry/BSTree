@@ -50,19 +50,15 @@ Node *findParent(BSTree t, int item){
 }
 
 
-Node *del(BSTree *t, nodePtr *node){
+Node *del(BSTree *t, int item){
 	nodePtr result;
-	if(!*node) return NULL;
-	// if(item < (*node)->data)
-	// 	(*node)->left = del(&(*node)->left, item);
-	// else if(item > (*node)->data)
-	// 	(*node)->right = del(&(*node)->right, item);
-	// else{
-		if((*node)->left == NULL && (*node)->right == NULL){
-			result = *node;
-			free(*node);
-			*node = NULL;
-		}
+	Node *node = find(*t, item);
+	Node *parent = findParent(*t, item);
+	if(node->left == NULL && node->right == NULL){
+		(parent->left==node) ? (parent->left=NULL) : (parent->right=NULL);
+		result = node; free(node);
+		node = NULL;
+	}
 	// 	else if((*node)->left == NULL && (*node)->right){
 	// 		result = *node;
 	// 		free(*node);
@@ -76,6 +72,6 @@ Node *del(BSTree *t, nodePtr *node){
 Node* Delete(BSTree *t, int item){
 	if(!t->root) return NULL;
 	t->count -= 1;
-	// return del(t, &dest);
+	return del(t, item);
 }
 
