@@ -195,7 +195,20 @@ void test_Delete_deletes_node_having_two_node_connects_the_lowest_element_in_its
 	int i, numbers[] = {8,4,12,5,11,9,1,7,2,15};
 	for(i=0; i<10; i++)
 		insert(&t, numbers[i]);
+	assertEqual(t.root->right->data, 12);
 	result = Delete(&t, 12);
 	assertEqual(t.root->right->data, 11);
-	
+	assert(t.count == 9);
+}
+
+void test_Delete_deletes_node_having_two_node_connects_the_smallest_element_in_its_right_subtree_to_its_parent(){
+	BSTree t = createBSTree(); Node *result;
+	int i, numbers[] = {8,4,12,5,11,9,1,7,2,15};
+	for(i=0; i<10; i++)
+		insert(&t, numbers[i]);
+	assertEqual(t.root->left->data, 4);
+	result = Delete(&t, 4);
+
+	assertEqual(t.root->left->data, 2);
+	assert(t.count == 9);
 }
