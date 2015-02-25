@@ -39,7 +39,7 @@ Node *find(BSTree t, int item){
 }
 
 Node *searchparent(Node *root, int item){
-	return (root->data == item) ? NULL : ((root->right && root->right->data==item) || (root->left && root->left->data==item)) 
+	return(root->data == item)? NULL :((root->right && root->right->data==item)||(root->left && root->left->data==item)) 
 	? root :(root->left && item < root->data) ? searchparent(root->left, item) 
 	: (root->right && item > root->data) ? searchparent(root->right, item) : NULL;
 }
@@ -81,4 +81,20 @@ Node* Delete(BSTree *t, int item){
 	if(!t->root) return NULL;
 	t->count -= 1;
 	return del(t, item);
+}
+
+
+void traverse(BSTree t, void (*traverser)(int)) {
+	BSTree subTree = createBSTree();
+	if(!t.root) return;
+	if(t.root->left){
+		subTree.root = t.root->left;
+		traverse(subTree, traverser);
+	}
+	traverser(t.root->data);
+	
+	if(t.root->right){
+		subTree.root = t.root->right;
+		traverse(subTree, traverser);
+	}
 }

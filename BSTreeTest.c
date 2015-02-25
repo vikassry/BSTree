@@ -212,3 +212,17 @@ void test_Delete_deletes_node_having_two_node_connects_the_smallest_element_in_i
 	assertEqual(t.root->left->data, 2);
 	assert(t.count == 9);
 }
+
+void print_number(int x){
+	printf("%d\n",x);
+}
+
+void test_traverse_prints_each_element_in_tree(){
+	BSTree t = createBSTree();
+	int i, numbers[] = {8,4,11,5,10,9,2,1,3,7,12};
+	for(i=0; i<11; i++)
+		insert(&t, numbers[i]);
+	assertEqual(t.root->left->data, 4);
+	assert(t.count == 11);
+	traverse(t, print_number);
+}
